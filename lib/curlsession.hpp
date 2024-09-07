@@ -14,24 +14,27 @@
 // #include "Response.hpp"
 // #include "Request.hpp"
 
-enum HTTPRequests { GET, POST, DELETE, PATCH }; // other HTTP requests ommitted based on API reference
+enum HTTPRequest { GET, POST, DELETE, PATCH }; // other HTTP requests ommitted based on API reference
 
 // errors are exception based
 
 struct Response {
   std::string    response_data;
+  std::string    header_data;
   bool           is_error;
   std::string    error_msg;
 };
 
 class CURLSession {
-  CURLSession();
-
   CURLSession(const std::string base_url);
   
   ~CURLSession();
 
-  void startCurl();
+  void setURL(const std::string base_url);
+
+  void flushHeaders(const std::string);
+
+  void CURLSession::startCurl();
 
   void setRequest(HTTPRequests type);
 
@@ -47,5 +50,10 @@ class CURLSession {
     std::mutex mutex_session;
     struct curl_slist  *list;
     std::string     base_url;
+
+    static size_t write(void* ptr, size_t size, size_t nmemb, std::string* data) {
+      data->append((char*) ptr, size * nmemb);
+      return size * nmemb;
+    }
 }
-#endif
+#endif // CURLSESSION_H
