@@ -11,6 +11,7 @@
 #endif
 
 #include <nlohmann/json.hpp>  // nlohmann/json
+#include <mutex>
 // #include "Response.hpp"
 // #include "Request.hpp"
 
@@ -26,34 +27,36 @@ struct Response {
 };
 
 class CURLSession {
-  CURLSession(const std::string base_url);
-  
-  ~CURLSession();
+  public:
+    CURLSession(const std::string &base_url = "");
+    
+    ~CURLSession();
 
-  void setURL(const std::string base_url);
+    void setURL(const std::string &base_url);
 
-  void flushHeaders(const std::string);
+    void flushHeaders();
 
-  void CURLSession::startCurl();
+    void startCurl();
 
-  void setRequest(HTTPRequests type);
+    void setRequest(const HTTPRequest type);
 
-  void addHeader(const std::string header); // covers removal, adding, changing
-  
-  void setBody(const std::string data);
+    void addHeader(const std::string &header); // covers removal, adding, changing
+    
+    void setBody(const std::string &data);
 
-  Response completeRequest();
+    Response completeRequest();
 
   private:
-    CURL               *curl;
-    CURLcode             res;
-    std::mutex mutex_session;
-    struct curl_slist  *list;
-    std::string     base_url;
+    CURL                          *curl;
+    CURLcode                        res;
+    static     std::mutex mutex_session;
+    static int           instance_count;
+    struct curl_slist             *list;
+    std::string                base_url;
 
     static size_t write(void* ptr, size_t size, size_t nmemb, std::string* data) {
       data->append((char*) ptr, size * nmemb);
       return size * nmemb;
     }
-}
+};
 #endif // CURLSESSION_H

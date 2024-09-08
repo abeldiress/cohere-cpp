@@ -8,78 +8,94 @@
 
 #include <string>
 #include <mutex>
+#include <iostream>
 
-CURLSession::CURLSession(const std::string &base_url_ = "") {
+std::mutex CURLSession::mutex_session;
+int CURLSession::instance_count = 0;
+
+CURLSession::CURLSession(const std::string &base_url_) : curl(nullptr), list(nullptr), base_url(base_url_) {
   curl = curl_easy_init();
+  if (!curl) throw std::runtime_error("Failed to initialize curl handle.");
   list = nullptr;
   base_url = base_url_;
+
+  if (instance_count++) {
+    curl_global_init(CURL_GLOBAL_ALL);
+  }
 }
 
 CURLSession::~CURLSession() {
   if (!curl) {
-    throw std::runtime_error("CURLSession cannot close to cURL handle error.")
+    // throw std::runtime_error("CURLSession cannot close to cURL handle error.");
+    std::cerr << "CURLSession could not clean up cURL handle." << std::endl;
   }
   curl_easy_cleanup(curl);
   if (list) curl_slist_free_all(list);
-  curl_global_cleanup();
+  if (!--instance_count) {
+    curl_global_cleanup();
+  }
 }
 
-void setURL(const std::string base_url_) { base_url = base_url_}
+void CURLSession::setURL(const std::string &base_url_) { base_url = base_url_; }
 
-void flushHeaders(const std::string) {
+void CURLSession::flushHeaders() {
   if (list) curl_slist_free_all(list);
 }
 
-void CURLSession::startCurl() {
-  curl_global_init(CURL_GLOBAL_ALL);
-  curl = curl_easy_init();
-  if (!curl) throw std::runtime_error("\"curl\" handle failed to start.");
-  curl_east_setopt(curl, CURLOPT_NOSIGNAL, 1L);
-}
+// void CURLSession::startCurl() {
+//   curl_global_init(CURL_GLOBAL_ALL);
+//   curl = curl_easy_init();
+//   if (!curl) throw std::runtime_error("\"curl\" handle failed to start.");
+//   curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
+// }
 
-void CURLSession::setRequest(HTTPRequest type) {
+void CURLSession::setRequest(const HTTPRequest type) {
   switch (type) {
     case HTTPRequest::GET:
-      curl_easy_setopt(curl, CURLOPT_HTTPGET, 0L);
-      curl_easy_setopt(curl, CURLOPT_POST, 1L);
+      curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
+      curl_easy_setopt(curl, CURLOPT_POST, 0L);
+      break;
     case HTTPRequest::POST:
       curl_easy_setopt(curl, CURLOPT_HTTPGET, 0L);
       curl_easy_setopt(curl, CURLOPT_POST, 1L);
+      break;
     case HTTPRequest::DELETE:
-      curl_easy_setopt(curl_, CURLOPT_HTTPGET, 0L);
-      curl_easy_setopt(curl_, CURLOPT_NOBODY, 0L);
-      curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "DELETE");
+      curl_easy_setopt(curl, CURLOPT_HTTPGET, 0L);
+      curl_easy_setopt(curl, CURLOPT_NOBODY, 0L);
+      curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+      break;
     case HTTPRequest::PATCH:
-      curl_easy_setopt(curl_, CURLOPT_HTTPGET, 0L);
-      curl_easy_setopt(curl_, CURLOPT_NOBODY, 0L);
-      curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "PATCH");
+      curl_easy_setopt(curl, CURLOPT_HTTPGET, 0L);
+      curl_easy_setopt(curl, CURLOPT_NOBODY, 0L);
+      curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+      break;
     default:
       throw std::runtime_error("Cannot support the specified HTTPRequest.");
   }
 
-  if (!curl) throw std::runtime_error("Cannot set HTTP request of handle.")
+  if (!curl) throw std::runtime_error("Cannot set HTTP request of handle.");
 }
 
-void CURLSession::addHeader(const std::string header) {
+void CURLSession::addHeader(const std::string &header) {
   list = curl_slist_append(list, header.c_str());
-  if (!list) throw std:runtime_error(
+  if (!list) throw std::runtime_error(
 		   std::string{"Failed to append the following: \"" 
 		               + header + "\" to the header"});
 }
 
-void CURLSession::setBody(const std::string data) {
+void CURLSession::setBody(const std::string &data) {
   curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, data.length());
   curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
 }
 
-Response completeRequest() {
+Response CURLSession::completeRequest() {
   std::lock_guard<std::mutex> lock(mutex_session);
 
   std::string response_string;
   std::string header_string;
 
-  if (!list) throw std::runtime_error();
-  if (!curl) throw std::runtime_error();
+  if (!list) throw std::runtime_error("Failed to mount header to handle");
+  if (!curl) throw std::runtime_error("Handle failed to launch.");
 
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
@@ -90,5 +106,5 @@ Response completeRequest() {
   res = curl_easy_perform(curl);
 
   bool is_error = res != CURLE_OK;
-  return { response_string, header_string, is_error, std::string{curl_easy_strerror(res_)} };
+  return (Response){ response_string, header_string, is_error, std::string{curl_easy_strerror(res)} };
 }
