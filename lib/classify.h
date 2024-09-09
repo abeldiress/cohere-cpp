@@ -2,6 +2,6 @@
 
 namespace libcohere {
   class Classify : private Interface {
-    //
+    // 
   }
 }

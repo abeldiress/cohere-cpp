@@ -26,10 +26,9 @@ namespace libcohere {
       ~Interface() {}
       
       Json request(const Method &http_method, 
-                    const std::string &endpoint, 
-                    const std::string &content_type = "application/json",
-                    const std::optional<std::json> &req_data = std::nullopt,
-                    const std::optional<std::string> &client_name = std::nullopt) {
+                  const std::string &endpoint, 
+                  const std::string &content_type = "application/json",
+                  const std::optional<std::json> &req_data = std::nullopt) {
         Json headers;
         headers.push_back({"Content-Type": content_type});
         headers.push_back({"Accept": "application/json"}); // every API endpoint uses json...default
@@ -62,8 +61,15 @@ namespace libcohere {
         return Json::parse(res.response_data);
       }
 
+      void setClientName(const std::string &c) : client_name(c) {}
+
+      std::string &getClientName() {
+        return client_name;
+      }
+
     private:
       static CURLSession session;
       std::string api_key;
+      std::string client_name;
   };
 }
