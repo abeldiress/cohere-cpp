@@ -11,6 +11,7 @@ include_directories(lib lib/nlohmann)
 
 add_executable(main main.cpp 
 src/curlsession.cpp 
+src/chat.cpp
 src/apikey.cpp 
 src/classify.cpp 
 src/curlsession.cpp 
