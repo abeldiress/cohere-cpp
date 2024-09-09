@@ -43,16 +43,18 @@ int main() {
 
   // curl_easy_cleanup(c);
 
-  CURLSession session;
-  session.setURL("https://jsonplaceholder.typicode.com/posts");
-  session.addHeader("Content-Type: application/json");
-  session.setRequest(HTTPRequest::POST);
-  session.setBody("{\"foo\": \"bar\"}");
-  Response r = session.completeRequest();
+  // CURLSession session;
+  // session.setURL("https://jsonplaceholder.typicode.com/posts");
+  // session.addHeader("Content-Type: application/json");
+  // session.setRequest(HTTPRequest::POST);
+  // session.setBody("{\"foo\": \"bar\"}");
+  // Response r = session.completeRequest();
 
-  cout << "Response Code: " << r.is_error << endl;
-  cout << "Response Error: " << r.error_msg << endl;
-  cout << "Response: " << endl << r.response_data << endl;
-  cout << "Header: " << endl << r.header_data << endl;
+  // cout << "Response Code: " << r.is_error << endl;
+  // cout << "Response Error: " << r.error_msg << endl;
+  // cout << "Response: " << endl << r.response_data << endl;
+  // cout << "Header: " << endl << r.header_data << endl;
+  curl_global_init(CURL_GLOBAL_ALL);
+  curl_global_init(CURL_GLOBAL_ALL);
   return 0;
 }

@@ -106,5 +106,5 @@ Response CURLSession::completeRequest() {
   res = curl_easy_perform(curl);
 
   bool is_error = res != CURLE_OK;
-  return (Response){ response_string, header_string, is_error, std::string{curl_easy_strerror(res)} };
+  return { response_string, header_string, is_error, std::string{curl_easy_strerror(res)} };
 }
