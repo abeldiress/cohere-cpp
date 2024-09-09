@@ -10,6 +10,7 @@
 #include "curlsession.hpp"
 
 using namespace std;
+using namespace CURLSession;
 
 // size_t writeFunction(void* ptr, size_t size, size_t nmemb, string* data) {
 //   data->append((char*) ptr, size * nmemb);

@@ -10,10 +10,10 @@
 #include <mutex>
 #include <iostream>
 
-std::mutex CURLSession::mutex_session;
+std::mutex CURLSession::Session::mutex_session;
 int CURLSession::instance_count = 0;
 
-CURLSession::CURLSession(const std::string &base_url_) : curl(nullptr), list(nullptr), base_url(base_url_) {
+CURLSession::Session::Session(const std::string &base_url_) : curl(nullptr), list(nullptr), base_url(base_url_) {
   curl = curl_easy_init();
   if (!curl) throw std::runtime_error("Failed to initialize curl handle.");
   list = nullptr;
@@ -24,7 +24,7 @@ CURLSession::CURLSession(const std::string &base_url_) : curl(nullptr), list(nul
   }
 }
 
-CURLSession::~CURLSession() {
+CURLSession::Session::~Session() {
   if (!curl) {
     // throw std::runtime_error("CURLSession cannot close to cURL handle error.");
     std::cerr << "CURLSession could not clean up cURL handle." << std::endl;
@@ -36,9 +36,9 @@ CURLSession::~CURLSession() {
   }
 }
 
-void CURLSession::setURL(const std::string &base_url_) { base_url = base_url_; }
+void CURLSession::Session::setURL(const std::string &base_url_) { base_url = base_url_; }
 
-void CURLSession::flushHeaders() {
+void CURLSession::Session::flushHeaders() {
   if (list) curl_slist_free_all(list);
 }
 
@@ -49,7 +49,7 @@ void CURLSession::flushHeaders() {
 //   curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
 // }
 
-void CURLSession::setRequest(const HTTPRequest type) {
+void CURLSession::Session::setRequest(const HTTPRequest type) {
   switch (type) {
     case HTTPRequest::GET:
       curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
@@ -76,19 +76,19 @@ void CURLSession::setRequest(const HTTPRequest type) {
   if (!curl) throw std::runtime_error("Cannot set HTTP request of handle.");
 }
 
-void CURLSession::addHeader(const std::string &header) {
+void CURLSession::Session::addHeader(const std::string &header) {
   list = curl_slist_append(list, header.c_str());
   if (!list) throw std::runtime_error(
 		   std::string{"Failed to append the following: \"" 
 		               + header + "\" to the header"});
 }
 
-void CURLSession::setBody(const std::string &data) {
+void CURLSession::Session::setBody(const std::string &data) {
   curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, data.length());
   curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
 }
 
-Response CURLSession::completeRequest() {
+CURLSession::CURLResponse CURLSession::Session::completeRequest() {
   std::lock_guard<std::mutex> lock(mutex_session);
 
   std::string response_string;
