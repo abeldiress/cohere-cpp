@@ -22,6 +22,7 @@ src/finetune.cpp
 src/interface.cpp 
 src/models.cpp 
 src/rerank.cpp 
-src/tokens.cpp)
+src/tokens.cpp
+lib/interface.h)
 
 target_link_libraries(main CURL::libcurl)

@@ -27,33 +27,38 @@ namespace libcohere {
       
       Json request(const Method &http_method, 
                     const std::string &endpoint, 
-                    const std::string& content_type = "application/json",
-                    const std::optional<json> &req_data) {
+                    const std::string &content_type = "application/json",
+                    const std::optional<std::json> &req_data = std::nullopt,
+                    const std::optional<std::string> &client_name = std::nullopt) {
         Json headers;
         headers.push_back({"Content-Type": content_type});
-        headers.push_back({"accept": "application/json"}); // every API reference uses json
+        headers.push_back({"Accept": "application/json"}); // every API endpoint uses json...default
         headers.push_back({"Authorization:": "bearer" + api_key});
-        
-        session.setRequest(static_cast<HTTPRequest>(http_method));
-        if (req_data.has_value()) {
-          session.setBody(req_data.dump());
+        if (client_name.has_value()) {
+          headers.push_back({"X-Client-Name": client_name});
         }
 
-        session.setURL(base_url + endpoint);
         session.flushHeaders();
-        
         for (auto &[key, value] : jsonObject.items()) {
           session.addHeader(key + ": " + value);
         }
 
+        if (req_data.has_value()) {
+          session.setBody(req_data.dump());
+        }
+        
+        session.setURL(base_url + endpoint);
+        session.setRequest(static_cast<HTTPRequest>(http_method));
+    
         CURLSession::CURLResponse res = session.completeRequest();
-
+        session.flushHeaders();
+        
         if (res.is_error) {
           Json err;
-          err["error"] = res.error_msg; 
+          err["error"] = res.error_msg;
+          return err; 
         }
 
-        session.flushHeaders();
         return Json::parse(res.response_data);
       }
 
