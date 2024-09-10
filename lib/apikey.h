@@ -2,6 +2,6 @@
 
 namespace libcohere {
   class APIKey : private Interface {
-    //
+    Json check();
   }
 }
