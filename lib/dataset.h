@@ -15,10 +15,10 @@ namespace libcohere {
     Json list(const std::optional<std::string> &dataset_type = std::nullopt,
               const std::optional<std::string> &before = std::nullopt,
               const std::optional<std::string> &after = std::nullopt,
-              const std::optional<double> offset,
-              const std::optional<std::string> validation_status /* enum unknown queued processing failed validated skipped */);
+              const std::optional<double> offset = std::nullopt,
+              const std::optional<std::string> validation_status = std::nullopt /* enum unknown queued processing failed validated skipped */);
     Json get_usage();
     Json get(const std::string &id);
-    Json delete(const std::string &id);
+    Json del(const std::string &id);
   }
 }
