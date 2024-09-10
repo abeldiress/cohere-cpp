@@ -9,6 +9,16 @@ namespace libcohere {
                 const std::optional<std::string> &keep_fields = std::nullopt,
                 const std::optional<std::string> &optional_fields = std::nullopt,
                 const std::optional<std::string> &text_separator = std::nullopt,
-                const std::optional<std::string> &csv_delimiter = std::nullopt);
+                const std::optional<std::string> &csv_delimiter = std::nullopt,
+                /* data -> file */
+                /* eval_data -> file */);
+    Json list(const std::optional<std::string> &dataset_type = std::nullopt,
+              const std::optional<std::string> &before = std::nullopt,
+              const std::optional<std::string> &after = std::nullopt,
+              const std::optional<double> offset,
+              const std::optional<std::string> validation_status /* enum unknown queued processing failed validated skipped */);
+    Json get_usage();
+    Json get(const std::string &id);
+    Json delete(const std::string &id);
   }
 }
