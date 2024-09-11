@@ -29,9 +29,9 @@ namespace CURLSession {
 
   class Session {
     public:
-      CURLSession(const std::string &base_url = "");
+      Session(const std::string &base_url = "");
       
-      ~CURLSession();
+      ~Session();
 
       void setURL(const std::string &base_url);
 
@@ -45,7 +45,7 @@ namespace CURLSession {
       
       void setBody(const std::string &data);
 
-      CURLResponse completeRequest();
+      Response completeRequest();
 
     private:
       CURL                          *curl;
@@ -60,6 +60,6 @@ namespace CURLSession {
         return size * nmemb;
       }
   };
-  #endif // CURLSESSION_H
-
 }
+
+#endif // CURLSESSION_H

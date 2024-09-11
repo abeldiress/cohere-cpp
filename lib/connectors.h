@@ -1,6 +1,7 @@
 #include "interface.h"
+#include <optional>
 
-namespace libcohere {
+namespace cohere {
   class Connectors : private Interface {
     Json list();
     Json create(const std::string &name,
@@ -10,10 +11,10 @@ namespace libcohere {
                 const std::optional<Json> &oauth = std::nullopt,
                 const std::optional<bool> &active = std::nullopt,
                 const std::optional<bool> &continue_on_failure = std::nullopt,
-                const std::optional<Json> &service_auth);
+                const std::optional<Json> &service_auth = std::nullopt);
     Json get(const std::string &id);
     Json update(const std::string &id);
     Json del(const std::string &id);
     Json authorize(const std::string &id);
-  }
+  };
 }

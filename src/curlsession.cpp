@@ -1,4 +1,4 @@
-#include "curlsession.hpp"
+#include "curlsession.h"
 
 #ifndef CURL_STATICLIB
 #include <curl/curl.h>
@@ -11,7 +11,7 @@
 #include <iostream>
 
 std::mutex CURLSession::Session::mutex_session;
-int CURLSession::instance_count = 0;
+int CURLSession::Session::instance_count = 0;
 
 CURLSession::Session::Session(const std::string &base_url_) : curl(nullptr), list(nullptr), base_url(base_url_) {
   curl = curl_easy_init();
@@ -88,7 +88,7 @@ void CURLSession::Session::setBody(const std::string &data) {
   curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
 }
 
-CURLSession::CURLResponse CURLSession::Session::completeRequest() {
+CURLSession::Response CURLSession::Session::completeRequest() {
   std::lock_guard<std::mutex> lock(mutex_session);
 
   std::string response_string;

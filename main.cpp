@@ -1,16 +1,10 @@
-#ifndef CURL_STATICLIB
-#include <curl/curl.h>
-#else 
-#include "curl/curl.h"
-#endif
-
 #include <string>
 #include <iostream>
 
-#include "curlsession.hpp"
+#include "cohere.h"
 
 using namespace std;
-using namespace CURLSession;
+using namespace cohere;
 
 // size_t writeFunction(void* ptr, size_t size, size_t nmemb, string* data) {
 //   data->append((char*) ptr, size * nmemb);
@@ -49,16 +43,21 @@ int main() {
 
   // curl_easy_cleanup(c);
 
-  CURLSession session;
-  session.setURL("https://jsonplaceholder.typicode.com/posts");
-  session.addHeader("Content-Type: application/json");
-  session.setRequest(HTTPRequest::POST);
-  session.setBody("{\"foo\": \"bar\"}");
-  Response r = session.completeRequest();
+  // CURLSession session;
+  // session.setURL("https://jsonplaceholder.typicode.com/posts");
+  // session.addHeader("Content-Type: application/json");
+  // session.setRequest(HTTPRequest::POST);
+  // session.setBody("{\"foo\": \"bar\"}");
+  // Response r = session.completeRequest();
 
-  cout << "Response Code: " << r.is_error << endl;
-  cout << "Response Error: " << r.error_msg << endl;
-  cout << "Response: " << endl << r.response_data << endl;
-  cout << "Header: " << endl << r.header_data << endl;
+  // cout << "Response Code: " << r.is_error << endl;
+  // cout << "Response Error: " << r.error_msg << endl;
+  // cout << "Response: " << endl << r.response_data << endl;
+  // cout << "Header: " << endl << r.header_data << endl;
+
+  Cohere co = Cohere(); // enviroment variable: CO_API_KEY
+  Json chat = co.Chat->chat("hello world!");
+
+  cout << chat.dump() << endl;
   return 0;
 }

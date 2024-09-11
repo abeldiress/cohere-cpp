@@ -1,7 +1,7 @@
 #include "interface.h"
 
-namespace libcohere {
+namespace cohere {
   class APIKey : private Interface {
     Json check();
-  }
+  };
 }

@@ -1,7 +1,8 @@
 #include "interface.h"
+#include <optional>
 
-namespace libcohere {
+namespace cohere {
   class Tokens : private Interface {
     //
-  }
+  };
 }

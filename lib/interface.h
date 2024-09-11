@@ -1,23 +1,20 @@
+#ifndef INTERFACE_H
+#define INTERFACE_H
+
 #include "curlsession.h"
-#include <iostream>
 #include <string>
 #include <nlohmann/json.hpp>
+#include <optional>
 
 using Json = nlohmann::json;
 
-namespace libcohere {
-  using Method = Session::HTTPRequest;
+namespace cohere {
+  using Method = CURLSession::HTTPRequest;
   const static std::string base_url = "https://api.cohere.com/v1";
 
   class Interface {
     public:
-      Interface(const std::string &key = "") {
-        if (key.empty()) {
-          if (const char *p = std::get_env("CO_API_KEY")) {
-            api_key = std::string{p};
-          }
-        }
-      }
+      Interface(const std::string &key = "");
 
       Interface(const Interface&) = delete;
       Interface& operator=(const Interface&) = delete;
@@ -25,51 +22,23 @@ namespace libcohere {
       Interface& operator=(Interface&&) = delete;
       ~Interface() {}
       
-      Json request(const Method &http_method, 
-                  const std::string &endpoint, 
+      Json request(const std::string &endpoint,
+                  const Method &http_method,
                   const std::string &content_type = "application/json",
-                  const std::optional<std::json> &req_data = std::nullopt) {
-        Json headers;
-        headers.push_back({"Content-Type": content_type});
-        headers.push_back({"Accept": "application/json"}); // every API endpoint uses json...default
-        headers.push_back({"Authorization:": "bearer" + api_key});
-        if (client_name.has_value()) {
-          headers.push_back({"X-Client-Name": client_name});
-        }
+                  const std::optional<Json> &req_data = std::nullopt);
 
-        session.flushHeaders();
-        for (auto &[key, value] : jsonObject.items()) {
-          session.addHeader(key + ": " + value);
-        }
+      void setClientName(const std::string &c);
 
-        if (req_data.has_value()) {
-          session.setBody(req_data.dump());
-        }
-        
-        session.setURL(base_url + endpoint);
-        session.setRequest(static_cast<HTTPRequest>(http_method));
-    
-        CURLSession::CURLResponse res = session.completeRequest();
-        session.flushHeaders();
-        
-        if (res.is_error) {
-          Json err;
-          err["error"] = res.error_msg;
-          return err; 
-        }
+      std::string &getClientName();
 
-        return Json::parse(res.response_data);
-      }
-
-      void setClientName(const std::string &c) : client_name(c) {}
-
-      std::string &getClientName() {
-        return client_name;
-      }
+      template<typename T>
+      void appendOptJson(Json &j, const std::string &key, const std::optional<T> &arg);
 
     private:
-      static CURLSession session;
-      std::string api_key;
+      static CURLSession::Session session;
+      static std::string api_key;
       std::string client_name;
   };
 }
+
+#endif // INTERFACE_H

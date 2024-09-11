@@ -1,6 +1,7 @@
 #include "interface.h"
+#include <optional>
 
-namespace libcohere {
+namespace cohere {
   class Finetune : private Interface {
     Json get(const std::optional<int> page_size = std::nullopt,
              const std::optional<int> &page_token = std::nullopt,
@@ -19,5 +20,5 @@ namespace libcohere {
     Json del(const std::string &id);
     Json retrieve_events(const std::string &finetuned_model_id);
     Json retrieve_metrics(const std::string &finetuned_model_id);
-  }
+  };
 }
