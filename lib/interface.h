@@ -12,6 +12,11 @@ namespace cohere {
   using Method = CURLSession::HTTPRequest;
   const static std::string base_url = "https://api.cohere.com/v1";
 
+  template<typename T>
+  void appendOptJson(Json &j, const std::string &key, const std::optional<T> &arg) {
+    if (arg.has_value()) j[key] = *arg;
+  }
+
   class Interface {
     public:
       Interface(const std::string &key = "");
@@ -31,8 +36,8 @@ namespace cohere {
 
       std::string &getClientName();
 
-      template<typename T>
-      void appendOptJson(Json &j, const std::string &key, const std::optional<T> &arg);
+      // template<typename T>
+      // void appendOptJson(Json &j, const std::string &key, const std::optional<T> &arg);
 
     private:
       static CURLSession::Session session;

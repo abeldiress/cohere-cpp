@@ -9,21 +9,21 @@ find_package(CURL REQUIRED)
 
 include_directories(lib lib/nlohmann)
 
-add_executable(main main.cpp 
-src/curlsession.cpp 
-src/interface.cpp
-src/chat.cpp
-# src/apikey.cpp 
-# src/classify.cpp 
-# src/curlsession.cpp 
-# src/connectors.cpp 
-# src/dataset.cpp 
-# src/embed.cpp 
-# src/finetune.cpp  
-# src/models.cpp 
-# src/rerank.cpp 
-# src/tokens.cpp
-# lib/interface.h
+add_executable(main
+  main.cpp
+  src/curlsession.cpp
+  src/interface.cpp
+  src/chat.cpp
+  # other source files
+  # src/apikey.cpp 
+  # src/classify.cpp 
+  # src/connectors.cpp 
+  # src/dataset.cpp 
+  # src/embed.cpp 
+  # src/finetune.cpp  
+  # src/models.cpp 
+  # src/rerank.cpp 
+  # src/tokens.cpp
 )
 
 target_link_libraries(main CURL::libcurl)

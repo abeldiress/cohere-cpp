@@ -53,7 +53,7 @@ std::string& cohere::Interface::getClientName() {
   return client_name;
 }
 
-template<typename T>
-void cohere::Interface::appendOptJson(Json &j, const std::string &key, const std::optional<T> &arg) {
-  if (arg.has_value()) j[key] = *arg;
-}
+// template<typename T>
+// void cohere::Interface::appendOptJson(Json &j, const std::string &key, const std::optional<T> &arg) {
+//   if (arg.has_value()) j[key] = *arg;
+// }
