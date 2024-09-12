@@ -2,7 +2,7 @@
 #include <optional>
 
 namespace cohere {
-  class Rerank : private Interface {
+  class Rerank : public Interface {
     Json rerank(const std::string &query,
                 const std::optional<Json> &documents = std::nullopt, /* list of strings or maps from strings to strings */
                 const std::optional<std::string> &models = std::nullopt,

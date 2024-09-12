@@ -2,7 +2,7 @@
 #include <optional>
 
 namespace cohere {
-  class Classify : private Interface {
+  class Classify : public Interface {
     Json classify(const std::vector<std::string> &inputs,
                   const std::optional<Json> &examples = std::nullopt, // list of objects
                   const std::optional<std::string> &model = std::nullopt,

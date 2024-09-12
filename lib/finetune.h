@@ -2,7 +2,7 @@
 #include <optional>
 
 namespace cohere {
-  class Finetune : private Interface {
+  class Finetune : public Interface {
     Json get(const std::optional<int> page_size = std::nullopt,
              const std::optional<int> &page_token = std::nullopt,
              const std::optional<std::string> &order_by = std::nullopt);

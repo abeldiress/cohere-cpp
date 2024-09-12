@@ -2,7 +2,7 @@
 #include <optional>
 
 namespace cohere {
-  class Embed : private Interface {
+  class Embed : public Interface {
     Json embed(const std::vector<std::string> &texts,
               const std::string &model = "embed-english-v2.0",
               const std::optional<std::string> &input_type = std::nullopt, /* enum: search_document, search_query, classification, clustering */

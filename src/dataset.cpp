@@ -1,5 +1,6 @@
-#include "interface.h"
-#include "json_helper.h"
+#include "dataset.h"
+
+// TODO: multiform compatibility for data, eval_data parameters
 
 Json cohere::Dataset::create(const std::string &name,
                              const std::string &type,
@@ -20,6 +21,8 @@ Json cohere::Dataset::create(const std::string &name,
   appendOptJson(body, "text_separator", text_separator);
   appendOptJson(body, "csv_delimiter", csv_delimiter);
 
+  // ...data, eval_data parameters...
+
   Json res = request("/datasets", cohere::Method::POST, body);
   return res;
 }
@@ -29,15 +32,30 @@ Json cohere::Dataset::list(const std::optional<std::string> &dataset_type,
                            const std::optional<std::string> &after,
                            const std::optional<double> offset,
                            const std::optional<std::string> &validation_status) {
-  Json body;
 
-  appendOptJson(body, "dataset_type", dataset_type);
-  appendOptJson(body, "before", before);
-  appendOptJson(body, "after", after);
-  appendOptJson(body, "offset", offset);
-  appendOptJson(body, "validation_status", validation_status);
+  std::string query = "";
 
-  Json res = request("/datasets", cohere::Method::GET, body);
+  if (dataset_type.has_value()) {
+    query += "dataset_type=" + *dataset_type + "&";
+  }
+
+  if (before.has_value()) {
+    query += "before=" + *before + "&";
+  }
+
+  if (after.has_value()) {
+    query += "after=" + *after + "&";
+  }
+
+  if (offset.has_value()) {
+    query += "offset=" + std::to_string(*offset) + "&";
+  }
+
+  if (validation_status.has_value()) {
+    query += "dataset_type=" + *validation_status + "&";
+  }
+
+  Json res = request("/datasets?" + query, cohere::Method::GET);
   return res;
 }
 

@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "connectors.h"
 
 Json cohere::Connectors::list() {
   Json res = request("/connectors", cohere::Method::GET);

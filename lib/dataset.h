@@ -2,7 +2,7 @@
 #include <optional>
 
 namespace cohere {
-  class Dataset : private Interface {
+  class Dataset : public Interface {
     Json create(const std::string &name,
                 const std::string &type, /* enum: embed-input, reranker-finetune-input, single-label-classification-finetune-input, chat-finetune-input, multi-label-classification-finetune-input */
                 const std::optional<bool> keep_original_file = std::nullopt,
@@ -17,7 +17,7 @@ namespace cohere {
               const std::optional<std::string> &before = std::nullopt,
               const std::optional<std::string> &after = std::nullopt,
               const std::optional<double> offset = std::nullopt,
-              const std::optional<std::string> validation_status = std::nullopt /* enum unknown queued processing failed validated skipped */);
+              const std::optional<std::string> &validation_status = std::nullopt /* enum unknown queued processing failed validated skipped */);
     Json get_usage();
     Json get(const std::string &id);
     Json del(const std::string &id);

@@ -14,16 +14,15 @@ add_executable(main
   src/curlsession.cpp
   src/interface.cpp
   src/chat.cpp
-  # other source files
-  # src/apikey.cpp 
-  # src/classify.cpp 
-  # src/connectors.cpp 
-  # src/dataset.cpp 
-  # src/embed.cpp 
-  # src/finetune.cpp  
-  # src/models.cpp 
-  # src/rerank.cpp 
-  # src/tokens.cpp
+  src/apikey.cpp 
+  src/classify.cpp 
+  src/connectors.cpp 
+  src/dataset.cpp 
+  src/embed.cpp 
+  src/finetune.cpp  
+  src/models.cpp 
+  src/rerank.cpp 
+  src/tokens.cpp
 )
 
 target_link_libraries(main CURL::libcurl)

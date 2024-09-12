@@ -2,7 +2,7 @@
 #include <optional>
 
 namespace cohere {
-  class Models : private Interface {
+  class Models : public Interface {
     Json get(const std::string &model);
     Json list(const std::optional<double> &page_size,
               const std::optional<std::string> &page_token,

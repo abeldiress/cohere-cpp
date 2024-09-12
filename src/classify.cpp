@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "classify.h"
 
 Json cohere::Classify::classify(const std::vector<std::string> &inputs,
                                 const std::optional<Json> &examples,

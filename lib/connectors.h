@@ -2,7 +2,7 @@
 #include <optional>
 
 namespace cohere {
-  class Connectors : private Interface {
+  class Connectors : public Interface {
     Json list();
     Json create(const std::string &name,
                 const std::string &url,
