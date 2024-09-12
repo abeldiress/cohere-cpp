@@ -48,7 +48,7 @@ int main() {
 
 - [ ] chat_stream*
 - [x] chat
-- [ ] dataset+
+- [ ] dataset†
 - [x] generate_stream*
 - [x] generate
 - [x] embed
@@ -61,10 +61,10 @@ int main() {
 
 \* Done passively through libcurl
 
-\+missing 1 endpoint
+†missing 1 endpoint
 
 ## Future (vague) Plans
- - Encapsulate parameters with easy-to-use enumerations and classes.
+ - Encapsulate parameters with easy-to-use enumerations and classes, finish other endpoints.
  - Provide support for Cohere's other [supported enviroments](https://docs.cohere.com/docs/cohere-works-everywhere#supported-environments) (Bedrock, Azure, etc.)
  - Improve build routine.
  - Add the library to vcpkg for easier access.
