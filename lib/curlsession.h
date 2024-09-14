@@ -52,13 +52,10 @@ namespace CURLSession {
       CURLcode                        res;
       static     std::mutex mutex_session;
       static int           instance_count;
-      struct curl_slist             *list;
+      struct curl_slist   *list = nullptr;
       std::string                base_url;
 
-      static size_t write(void* ptr, size_t size, size_t nmemb, std::string* data) {
-        data->append((char*) ptr, size * nmemb);
-        return size * nmemb;
-      }
+      static size_t write(void* ptr, size_t size, size_t nmemb, std::string* data);
   };
 }
 

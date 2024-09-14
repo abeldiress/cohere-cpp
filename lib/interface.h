@@ -39,10 +39,11 @@ namespace cohere {
       // template<typename T>
       // void appendOptJson(Json &j, const std::string &key, const std::optional<T> &arg);
 
-    private:
-      static CURLSession::Session session;
       static std::string api_key;
       std::string client_name;
+
+    private:
+      static CURLSession::Session session;
   };
 }
 

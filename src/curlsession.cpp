@@ -13,27 +13,26 @@
 std::mutex CURLSession::Session::mutex_session;
 int CURLSession::Session::instance_count = 0;
 
+size_t CURLSession::Session::write(void* ptr, size_t size, size_t nmemb, std::string* data) {
+  data->append((char*) ptr, size * nmemb);
+  return size * nmemb;
+}
+
 CURLSession::Session::Session(const std::string &base_url_) : curl(nullptr), list(nullptr), base_url(base_url_) {
   curl = curl_easy_init();
   if (!curl) throw std::runtime_error("Failed to initialize curl handle.");
-  list = nullptr;
-  base_url = base_url_;
 
-  if (instance_count++) {
-    curl_global_init(CURL_GLOBAL_ALL);
-  }
+  if (!instance_count++) curl_global_init(CURL_GLOBAL_ALL);
 }
 
 CURLSession::Session::~Session() {
   if (!curl) {
-    // throw std::runtime_error("CURLSession cannot close to cURL handle error.");
     std::cerr << "CURLSession could not clean up cURL handle." << std::endl;
+    // throw std::runtime_error("CURLSession cannot close to cURL handle error.");
   }
   curl_easy_cleanup(curl);
   if (list) curl_slist_free_all(list);
-  if (!--instance_count) {
-    curl_global_cleanup();
-  }
+  if (!--instance_count) curl_global_cleanup();
 }
 
 void CURLSession::Session::setURL(const std::string &base_url_) { base_url = base_url_; }
@@ -77,6 +76,7 @@ void CURLSession::Session::setRequest(const HTTPRequest type) {
 }
 
 void CURLSession::Session::addHeader(const std::string &header) {
+  if (!list) list = nullptr;
   list = curl_slist_append(list, header.c_str());
   if (!list) throw std::runtime_error(
 		   std::string{"Failed to append the following: \"" 
@@ -97,6 +97,8 @@ CURLSession::Response CURLSession::Session::completeRequest() {
   if (!list) throw std::runtime_error("Failed to mount header to handle");
   if (!curl) throw std::runtime_error("Handle failed to launch.");
 
+  curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
+
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
   curl_easy_setopt(curl, CURLOPT_HEADERDATA, &header_string);
@@ -106,5 +108,6 @@ CURLSession::Response CURLSession::Session::completeRequest() {
   res = curl_easy_perform(curl);
 
   bool is_error = res != CURLE_OK;
-  return { response_string, header_string, is_error, std::string{curl_easy_strerror(res)} };
+  std::string error_msg = curl_easy_strerror(res);
+  return { response_string, header_string, is_error, error_msg };
 }

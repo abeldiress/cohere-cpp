@@ -1,32 +1,39 @@
 #include <string>
 #include <iostream>
+#include <memory>
 
 #include "cohere.h"
+#include "curlsession.h"
 
 using namespace std;
 using namespace cohere;
 
-// size_t writeFunction(void* ptr, size_t size, size_t nmemb, string* data) {
-//   data->append((char*) ptr, size * nmemb);
-//   return size * nmemb;
-// }
+size_t writeFunction(void* ptr, size_t size, size_t nmemb, string* data) {
+  data->append((char*) ptr, size * nmemb);
+  return size * nmemb;
+}
 
 int main() {
   // CURL *c = curl_easy_init();
 
-  // std::string data{"{\"foo\": \"bar\"}"};
+  // std::string data{"{\"message\": \"hello world\"}"};
+  // std::string ct{"Content-Type: application/json"};
+  // std::string at{"Accept: application/json"};
+  // std::string auth{"Authorization: Bearer "};
 
   // string response_string;
   // string header_string;
 
-  // struct curl_slist *list = NULL;
+  // struct curl_slist *list = nullptr;
 
-  // list = curl_slist_append(list, "Content-Type: application/json");
+  // list = curl_slist_append(list, ct.c_str());
+  // list = curl_slist_append(list, at.c_str());
+  // list = curl_slist_append(list, auth.c_str());
   // curl_easy_setopt(c, CURLOPT_HTTPHEADER, list);
 
   // curl_easy_setopt(c, CURLOPT_HTTPGET, 0L);
   // curl_easy_setopt(c, CURLOPT_POST, 1L);
-  // curl_easy_setopt(c, CURLOPT_URL, "https://jsonplaceholder.typicode.com/posts");
+  // curl_easy_setopt(c, CURLOPT_URL, "https://api.cohere.com/v1/chat");
   // curl_easy_setopt(c, CURLOPT_POSTFIELDSIZE, data.length());
   // curl_easy_setopt(c, CURLOPT_POSTFIELDS, data.c_str());
 
@@ -43,21 +50,28 @@ int main() {
 
   // curl_easy_cleanup(c);
 
-  // CURLSession session;
-  // session.setURL("https://jsonplaceholder.typicode.com/posts");
-  // session.addHeader("Content-Type: application/json");
-  // session.setRequest(HTTPRequest::POST);
-  // session.setBody("{\"foo\": \"bar\"}");
-  // Response r = session.completeRequest();
+  CURLSession::Session session;
+  session.setURL("https://api.cohere.com/v1/chat");
+  session.addHeader("Content-Type: application/json");
+  session.addHeader("Accept: application/json");
+  session.addHeader("Authorization: Bearer ");
+  session.setRequest(CURLSession::HTTPRequest::POST);
+  session.setBody("{\"message\": \"hello world\"}");
+  CURLSession::Response r = session.completeRequest();
 
-  // cout << "Response Code: " << r.is_error << endl;
-  // cout << "Response Error: " << r.error_msg << endl;
-  // cout << "Response: " << endl << r.response_data << endl;
-  // cout << "Header: " << endl << r.header_data << endl;
+  cout << "Response Code: " << r.is_error << endl;
+  cout << "Response Error: " << r.error_msg << endl;
+  cout << "Response: " << endl << r.response_data << endl;
+  cout << "Header: " << endl << r.header_data << endl;
 
-  Cohere co = Cohere(); // enviroment variable: CO_API_KEY
-  Json chat = co.Chat->chat("hello world!");
+  // Json body;
+  // body["message"] = "hello world";
+  // Interface i("");
+  // Json res = i.request("/chat", Method::POST, "application/json", body);
+  // cout << res.dump() << endl;
 
-  cout << chat.dump() << endl;
+  // Cohere co = Cohere(""); // enviroment variable: CO_API_KEY
+  // Json chat = co.Chat->chat("hello world!");
+  // cout << chat.dump() << endl;
   return 0;
 }

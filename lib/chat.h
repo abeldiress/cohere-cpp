@@ -5,11 +5,15 @@
 #include <optional>
 
 namespace cohere {
-  class Chat : public Interface {
+  class Chat : public cohere::Interface {
+    // decided not to use this
+    // using cohere::Interface::Interface;
+
     public:
+      Chat(const std::string &key = "");
       Json chat(const std::string &message,
-                const bool stream = false,
                 const std::string &model = "command-r-plus-08-2024",
+                const bool stream = false,
                 const std::optional<std::string> &preamble = std::nullopt,
                 const std::optional<Json> &chat_history = std::nullopt, // list of objects
                 const std::optional<std::string> &conversation_id = std::nullopt,

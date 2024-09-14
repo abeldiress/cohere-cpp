@@ -2,11 +2,16 @@
 
 CURLSession::Session cohere::Interface::session = CURLSession::Session();
 std::string cohere::Interface::api_key = "";
+
 cohere::Interface::Interface(const std::string &key) {
   if (key.empty() && api_key.empty()) {
     if (const char *p = std::getenv("CO_API_KEY")) {
       api_key = std::string{p};
+    } else {
+      throw std::runtime_error("Could not find API key in enviroment variables");
     }
+  } else if (api_key.empty()) {
+    api_key = key;
   }
 }
 
@@ -14,19 +19,28 @@ Json cohere::Interface::request(const std::string &endpoint,
             const Method &http_method,
             const std::string &content_type,
             const std::optional<Json> &req_data) {
-  Json headers;
-  headers.push_back({"Content-Type", content_type});
-  headers.push_back({"Accept", "application/json"}); // every API endpoint uses json...default
-  headers.push_back({"Authorization:", "bearer" + api_key});
+  // Json headers;
+  // headers["Content-Type"] = content_type;
+  // headers[] = ""; 
+  // headers[] = "Bearer" + api_key; 
+
+  session.addHeader("Content-Type: " + content_type);
+  session.addHeader("Accept: application/json"); // every API endpoint uses json...default
+  session.addHeader("Authorization: Bearer " + api_key);
   
   if (!client_name.empty()) {
-    headers.push_back({"X-Client-Name", client_name});
+    session.addHeader("X-Client-Name: " + client_name);
+    // headers["X-Client-Name"] = client_name;
   }
 
-  session.flushHeaders();
-  for (auto &[key, value] : headers.items()) {
-    session.addHeader(key + ": " + value.dump());
-  }
+  // std::cout << headers.dump() << std::endl;
+
+  // for (auto &[key, value] : headers.items()) {
+  //   session.addHeader(key + ": " + value.dump());
+  // }
+
+  // std::cout << req_data->dump() << std::endl;
+  // std::cout << base_url + endpoint << std::endl;
 
   if (req_data.has_value()) {
     session.setBody(req_data->dump());

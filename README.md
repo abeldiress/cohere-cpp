@@ -27,22 +27,23 @@ print(chat)
 C++
 ```cpp
 #include <iostream>
-
-#include "cohere.h"
+#include "cohere.h" // only header file necessary
 
 using namespace std;
 using namespace cohere;
 
 int main() {
-    Cohere co = Cohere();
+    Cohere co = Cohere(); // checks enviroment variables
     Json chat = co.Chat->chat(
-      "hello world!", 
-      "command"
+        "hello world!", 
+        "command"
     );
 
     cout << chat.dump() << endl;
 }
 ```
+
+Similar to the Python SDK, you can either provide the key or place as an enviroment variable.
 
 ## Endpoint Status
 
@@ -61,13 +62,14 @@ int main() {
 
 \* Done passively through libcurl
 
-†missing 1 endpoint
+† missing 1 endpoint
 
-## Future (vague) Plans
+## Future Plans (unordered)
  - Encapsulate parameters with easy-to-use enumerations and classes, finish other endpoints.
  - Provide support for Cohere's other [supported enviroments](https://docs.cohere.com/docs/cohere-works-everywhere#supported-environments) (Bedrock, Azure, etc.)
  - Improve build routine.
  - Add the library to vcpkg for easier access.
+ - The library only covers non-2XX errors. Expand to cover API specifc errors through exception based handling.
  - Provide basic documentation for every available endpoint.
 
 ## Acknowledgements

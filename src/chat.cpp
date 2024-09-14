@@ -1,8 +1,11 @@
 #include "chat.h"
+#include <iostream>
+
+cohere::Chat::Chat(const std::string &key): cohere::Interface(key) { }
 
 Json cohere::Chat::chat(const std::string &message,
-              const bool stream,
               const std::string &model,
+              const bool stream,
               const std::optional<std::string> &preamble,
               const std::optional<Json> &chat_history,
               const std::optional<std::string> &conversation_id,
@@ -53,6 +56,6 @@ Json cohere::Chat::chat(const std::string &message,
   appendOptJson(body, "response_format", response_format);
   body["safety_mode"] = safety_mode;
 
-  Json res = request("/chat", cohere::Method::GET, body);
+  Json res = request("/chat", cohere::Method::GET, "application/json", body);
   return res;
 }

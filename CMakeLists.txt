@@ -11,12 +11,13 @@ include_directories(lib lib/nlohmann)
 
 add_executable(main
   main.cpp
+  src/cohere.cpp
   src/curlsession.cpp
   src/interface.cpp
   src/chat.cpp
   src/apikey.cpp 
   src/classify.cpp 
-  src/connectors.cpp 
+  src/connectors.cpp
   src/dataset.cpp 
   src/embed.cpp 
   src/finetune.cpp  
