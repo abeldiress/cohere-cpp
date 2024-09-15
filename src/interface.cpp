@@ -9,7 +9,7 @@ cohere::Interface::Interface(const std::string &key) {
     if (const char *co = std::getenv("CO_API_KEY")) {
       api_key = std::string{co};
     } else {
-      throw std::runtime_error("Could not find API key in enviroment variables");
+      // throw std::runtime_error("Could not find API key in enviroment variables");
     }
   } else if (api_key.empty()) {
     api_key = key;

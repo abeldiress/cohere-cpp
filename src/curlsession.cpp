@@ -31,14 +31,15 @@ CURLSession::Session::~Session() {
     // throw std::runtime_error("CURLSession cannot close to cURL handle error.");
   }
   curl_easy_cleanup(curl);
-  if (list) curl_slist_free_all(list);
+  curl_slist_free_all(list);
   if (!--instance_count) curl_global_cleanup();
 }
 
 void CURLSession::Session::setURL(const std::string &base_url_) { base_url = base_url_; }
 
 void CURLSession::Session::flushHeaders() {
-  if (list) curl_slist_free_all(list);
+  curl_slist_free_all(list);
+  list = nullptr; // for some reason curl_slist_free_all d
 }
 
 // void CURLSession::startCurl() {
@@ -76,7 +77,7 @@ void CURLSession::Session::setRequest(const HTTPRequest type) {
 }
 
 void CURLSession::Session::addHeader(const std::string &header) {
-  if (!list) list = nullptr;
+  // if (!list) list = nullptr;
   list = curl_slist_append(list, header.c_str());
   if (!list) throw std::runtime_error(
 		   std::string{"Failed to append the following: \"" 
