@@ -35,7 +35,7 @@ namespace cohere {
                 const std::optional<Json> &tool_results = std::nullopt, // list of objects
                 const bool force_single_step = false,
                 const std::optional<Json> &response_format = std::nullopt,
-                const std::string &safety_mode = "CONTEXTUAL" /* enum CONTEXTUAL STRICT NONE */);
+                const std::optional<std::string> &safety_mode = std::nullopt /* enum CONTEXTUAL STRICT NONE */);
   };
 }
 

@@ -1,12 +1,13 @@
 #include "interface.h"
+#include <iostream>
 
 CURLSession::Session cohere::Interface::session = CURLSession::Session();
 std::string cohere::Interface::api_key = "";
 
 cohere::Interface::Interface(const std::string &key) {
   if (key.empty() && api_key.empty()) {
-    if (const char *p = std::getenv("CO_API_KEY")) {
-      api_key = std::string{p};
+    if (const char *co = std::getenv("CO_API_KEY")) {
+      api_key = std::string{co};
     } else {
       throw std::runtime_error("Could not find API key in enviroment variables");
     }
@@ -45,7 +46,7 @@ Json cohere::Interface::request(const std::string &endpoint,
   if (req_data.has_value()) {
     session.setBody(req_data->dump());
   }
-  
+ 
   session.setURL(base_url + endpoint);
   session.setRequest(http_method);
 

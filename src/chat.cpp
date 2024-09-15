@@ -27,7 +27,7 @@ Json cohere::Chat::chat(const std::string &message,
               const std::optional<Json> &tool_results,
               const bool force_single_step,
               const std::optional<Json> &response_format,
-              const std::string &safety_mode) {
+              const std::optional<std::string> &safety_mode) {
   Json body;
 
   body["message"] = message;
@@ -54,7 +54,8 @@ Json cohere::Chat::chat(const std::string &message,
   appendOptJson(body, "tool_results", tool_results);
   body["force_single_step"] = force_single_step;
   appendOptJson(body, "response_format", response_format);
-  body["safety_mode"] = safety_mode;
+  appendOptJson(body, "safety_mode", safety_mode);
+  // body["safety_mode"] = safety_mode;
 
   Json res = request("/chat", cohere::Method::GET, "application/json", body);
   return res;

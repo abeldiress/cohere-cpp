@@ -43,7 +43,7 @@ namespace CURLSession {
 
       void addHeader(const std::string &header); // covers removal, adding, changing
       
-      void setBody(const std::string &data);
+      void setBody(const std::string &data_);
 
       Response completeRequest();
 
@@ -54,6 +54,7 @@ namespace CURLSession {
       static int           instance_count;
       struct curl_slist   *list = nullptr;
       std::string                base_url;
+      std::string                    data;
 
       static size_t write(void* ptr, size_t size, size_t nmemb, std::string* data);
   };

@@ -83,9 +83,8 @@ void CURLSession::Session::addHeader(const std::string &header) {
 		               + header + "\" to the header"});
 }
 
-void CURLSession::Session::setBody(const std::string &data) {
-  curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, data.length());
-  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
+void CURLSession::Session::setBody(const std::string &data_) {
+  data = data_;  // make a copy in case its a temporary literal
 }
 
 CURLSession::Response CURLSession::Session::completeRequest() {
@@ -102,6 +101,9 @@ CURLSession::Response CURLSession::Session::completeRequest() {
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
   curl_easy_setopt(curl, CURLOPT_HEADERDATA, &header_string);
+
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, data.length());
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
 
   curl_easy_setopt(curl, CURLOPT_URL, base_url.c_str());
 
