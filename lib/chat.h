@@ -5,7 +5,7 @@
 #include <optional>
 
 namespace cohere {
-  class Chat : public cohere::Interface {
+  class Chat : public Interface {
     // decided not to use this
     // using cohere::Interface::Interface;
 

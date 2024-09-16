@@ -1,5 +1,4 @@
 #include "interface.h"
-#include <iostream>
 
 CURLSession::Session cohere::Interface::session = CURLSession::Session();
 std::string cohere::Interface::api_key = "";
@@ -18,8 +17,8 @@ cohere::Interface::Interface(const std::string &key) {
 
 Json cohere::Interface::request(const std::string &endpoint,
             const Method &http_method,
-            const std::string &content_type,
-            const std::optional<Json> &req_data) {
+            const std::optional<Json> &req_data,
+            const std::string &content_type) {
   // Json headers;
   // headers["Content-Type"] = content_type;
   // headers[] = ""; 

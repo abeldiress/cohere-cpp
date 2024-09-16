@@ -29,8 +29,8 @@ namespace cohere {
       
       Json request(const std::string &endpoint,
                   const Method &http_method,
-                  const std::string &content_type = "application/json",
-                  const std::optional<Json> &req_data = std::nullopt);
+                  const std::optional<Json> &req_data = std::nullopt,
+                  const std::string &content_type = "application/json");
 
       void setClientName(const std::string &c);
 

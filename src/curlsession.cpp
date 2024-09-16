@@ -39,15 +39,8 @@ void CURLSession::Session::setURL(const std::string &base_url_) { base_url = bas
 
 void CURLSession::Session::flushHeaders() {
   curl_slist_free_all(list);
-  list = nullptr; // for some reason curl_slist_free_all d
+  list = nullptr; // for some reason list doesnt evaluate to NULL when curl_slist_free_all called
 }
-
-// void CURLSession::startCurl() {
-//   curl_global_init(CURL_GLOBAL_ALL);
-//   curl = curl_easy_init();
-//   if (!curl) throw std::runtime_error("\"curl\" handle failed to start.");
-//   curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
-// }
 
 void CURLSession::Session::setRequest(const HTTPRequest type) {
   switch (type) {

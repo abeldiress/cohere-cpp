@@ -1,5 +1,4 @@
 #include "chat.h"
-#include <iostream>
 
 cohere::Chat::Chat(const std::string &key): cohere::Interface(key) { }
 
@@ -57,6 +56,6 @@ Json cohere::Chat::chat(const std::string &message,
   appendOptJson(body, "safety_mode", safety_mode);
   // body["safety_mode"] = safety_mode;
 
-  Json res = request("/chat", cohere::Method::GET, "application/json", body);
+  Json res = request("/chat", cohere::Method::POST, "application/json", body);
   return res;
 }
