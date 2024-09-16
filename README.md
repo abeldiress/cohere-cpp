@@ -56,7 +56,7 @@ int main() {
         true
     );
 
-    for (auto &event: chat["stream"]) {
+    for (auto &event: chat_stream["stream"]) {
         if (event["event_type"] == "text-generation") {
             cout << event["text"] << endl;
         }
@@ -66,10 +66,10 @@ int main() {
 
 ## Endpoint Status
 
-- [x] chat_stream*
+- [x] chat_stream
 - [x] chat
 - [ ] dataset†
-- [x] generate_stream*
+- [x] generate_stream
 - [x] generate
 - [x] embed
 - [x] rerank

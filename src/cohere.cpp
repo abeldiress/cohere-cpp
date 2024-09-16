@@ -1,8 +1,6 @@
 #include "cohere.h"
 #include <memory> 
 
-#include <iostream>
-
 cohere::Cohere::Cohere(const std::string &api_key) {
   Chat = std::make_unique<cohere::Chat>(api_key);
   Embed = std::make_unique<cohere::Embed>();
