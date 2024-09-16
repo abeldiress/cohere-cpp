@@ -45,9 +45,28 @@ int main() {
 
 Similar to the Python SDK, you can either provide the key or place as an enviroment variable.
 
+For chat streams, you can perform the following:
+
+```cpp
+int main() {
+    Cohere co = Cohere(); // checks enviroment variables
+    Json chat_stream = co.Chat->chat(
+        "Tell me about Terry Fox", 
+        "command",
+        true
+    );
+
+    for (auto &event: chat["stream"]) {
+        if (event["event_type"] == "text-generation") {
+            cout << event["text"] << endl;
+        }
+    }
+}
+```
+
 ## Endpoint Status
 
-- [ ] chat_stream*
+- [x] chat_stream*
 - [x] chat
 - [ ] dataset†
 - [x] generate_stream*
@@ -60,9 +79,9 @@ Similar to the Python SDK, you can either provide the key or place as an envirom
 - [ ] detokenize
 - [x] check_api_key
 
-\* Done passively through libcurl
-
 † missing 1 endpoint
+
+Tentative date for preview release binaries: 09/21
 
 ## Future Plans (unordered)
  - Encapsulate parameters with easy-to-use enumerations and classes, finish other endpoints.

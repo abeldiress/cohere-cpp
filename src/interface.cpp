@@ -1,4 +1,6 @@
 #include "interface.h"
+#include <vector>
+#include <iostream>
 
 CURLSession::Session cohere::Interface::session = CURLSession::Session();
 std::string cohere::Interface::api_key = "";
@@ -8,7 +10,7 @@ cohere::Interface::Interface(const std::string &key) {
     if (const char *co = std::getenv("CO_API_KEY")) {
       api_key = std::string{co};
     } else {
-      // throw std::runtime_error("Could not find API key in enviroment variables");
+      throw std::runtime_error("Could not find API key in enviroment variables");
     }
   } else if (api_key.empty()) {
     api_key = key;
@@ -58,7 +60,25 @@ Json cohere::Interface::request(const std::string &endpoint,
     return err; 
   }
 
-  return Json::parse(res.response_data);
+  return parseResponse(res.response_data);
+}
+
+Json cohere::Interface::parseResponse(const std::string &response) {
+  if (Json::accept(response)) return Json::parse(response);
+
+  // for streamed outputs
+  std::istringstream iss{response};
+
+  Json stream_json;
+  std::vector<Json> stream;
+
+  std::string part;
+  while (getline(iss, part)) {
+    stream.push_back(Json::parse(part));
+  }
+
+  stream_json["stream"] = stream;
+  return stream_json;
 }
 
 void cohere::Interface::setClientName(const std::string &c) { client_name = c; }
