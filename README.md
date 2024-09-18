@@ -33,7 +33,7 @@ using namespace std;
 using namespace cohere;
 
 int main() {
-    Cohere co = Cohere(); // checks enviroment variables
+    Cohere co = Cohere(); // checks enviroment variable: CO_API_KEY
     Json chat = co.Chat->chat(
         "hello world!", 
         "command"
@@ -49,7 +49,7 @@ For chat streams, you can perform the following:
 
 ```cpp
 int main() {
-    Cohere co = Cohere(); // checks enviroment variables
+    Cohere co = Cohere();
     Json chat_stream = co.Chat->chat(
         "Tell me about Terry Fox", 
         "command",
@@ -75,8 +75,8 @@ int main() {
 - [x] rerank
 - [x] classify
 - [x] summarize
-- [ ] tokenize
-- [ ] detokenize
+- [x] tokenize
+- [x] detokenize
 - [x] check_api_key
 
 † missing 1 endpoint
