@@ -33,7 +33,7 @@ using namespace std;
 using namespace cohere;
 
 int main() {
-    Cohere co = Cohere(); // checks enviroment variable: CO_API_KEY
+    Cohere co = Cohere("YOUR_API_KEY");
     Json chat = co.Chat->chat(
         "hello world!", 
         "command"
@@ -43,7 +43,7 @@ int main() {
 }
 ```
 
-Similar to the Python SDK, you can either provide the key or place as an enviroment variable.
+Similar to the Python SDK, you can either provide the key or place it as an enviroment variable name `CO_API_KEY`.
 
 For chat streams, you can perform the following:
 
