@@ -33,7 +33,7 @@ using namespace std;
 using namespace cohere;
 
 int main() {
-    Cohere co = Cohere("YOUR_API_KEY");
+    Cohere co{"YOUR_API_KEY"}; // can rewrite to make it more "Pythonic"
     Json chat = co.Chat->chat(
         "hello world!", 
         "command"
@@ -49,7 +49,7 @@ For chat streams, you can perform the following:
 
 ```cpp
 int main() {
-    Cohere co = Cohere();
+    Cohere co("YOUR_API_KEY");
     Json chat_stream = co.Chat->chat(
         "Tell me about Terry Fox", 
         "command",

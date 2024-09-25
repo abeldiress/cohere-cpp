@@ -23,23 +23,13 @@ int main() {
   // Json words = co.Tokens->detokenize({40723,21641}, "command");
   // cout << words.dump() << endl;
 
-  Cohere co = Cohere(); // enviroment variable: CO_API_KEY
+  Cohere co; // enviroment variable: CO_API_KEY
 
-  ifstream ifs{"prompts.txt"};
+  Json chat = co.Chat->chat(
+    "hello world!", 
+    "command"
+  );
 
-  vector<string> prompts;
-  string prompt;
-
-  while (ifs >> prompt) {
-    prompts.push_back(prompt);
-  }
-
-  cout << "{" << prompts[0] << "}" << endl;
-
-  for (auto &p: prompts) {
-    Json chat = co.Chat->chat(p, "command");
-    cout << chat << endl;
-  }
-
+  cout << chat.dump() << endl;
   return 0;
 }
