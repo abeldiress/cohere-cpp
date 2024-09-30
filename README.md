@@ -81,7 +81,7 @@ int main() {
 
 † missing 1 endpoint
 
-Tentative date for preview release binaries: **09/21**
+Priority TODO: migrate the API Chat, Embed, Rerank, and Classify to v2. 
 
 ## Future Plans (unordered)
  - Encapsulate parameters with easy-to-use enumerations and classes, finish other endpoints.
