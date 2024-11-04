@@ -11,6 +11,12 @@ namespace cohere {
 
     public:
       Chat(const std::string &key = "");
+      // Chat() = delete;
+      // Chat(const Chat &) = delete;
+      // Chat &operator=(const Chat &) = delete;
+      // Chat(Chat &&) = delete;
+      // Chat &operator=(Chat &&) = delete;
+      
       Json chat(const std::string &message,
                 const std::string &model = "command-r-plus-08-2024",
                 const bool stream = false,

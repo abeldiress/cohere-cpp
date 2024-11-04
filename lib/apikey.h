@@ -2,6 +2,13 @@
 
 namespace cohere {
   class APIKey : private Interface {
-    Json check();
+    public:
+      // APIKey();
+      // APIKey(const APIKey &) = delete;
+      // APIKey &operator=(const APIKey &) = delete;
+      // APIKey(APIKey &&) = delete;
+      // APIKey &operator=(APIKey &&) = delete;
+
+      Json check();
   };
 }

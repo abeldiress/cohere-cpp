@@ -18,7 +18,7 @@ namespace cohere {
   }
 
   class Interface {
-    public:
+    protected:
       Interface(const std::string &key = "");
 
       Interface(const Interface&) = delete;

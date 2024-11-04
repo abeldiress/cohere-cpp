@@ -39,7 +39,7 @@ void CURLSession::Session::setURL(const std::string &base_url_) { base_url = bas
 
 void CURLSession::Session::flushHeaders() {
   curl_slist_free_all(list);
-  list = nullptr; // for some reason list doesnt evaluate to NULL when curl_slist_free_all called
+  list = nullptr; // for some reason list doesnt evaluate to nullptr when curl_slist_free_all called
 }
 
 void CURLSession::Session::setRequest(const HTTPRequest type) {

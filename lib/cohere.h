@@ -19,9 +19,9 @@ namespace cohere {
     public:
       Cohere(const std::string &api_key = "");
       Cohere(const Cohere &) = delete;
-      Cohere(const Cohere &&) = delete;
-      Cohere &operator=(const Cohere &&) = delete;
-      Cohere operator=(const Cohere &) = delete;
+      Cohere(Cohere &&) = delete;
+      Cohere &operator=(Cohere &&) = delete;
+      Cohere &operator=(const Cohere &) = delete;
 
       // NOTE: only one API key can be used at a time
       std::unique_ptr<cohere::Chat> Chat;

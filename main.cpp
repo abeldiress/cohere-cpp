@@ -25,7 +25,7 @@ int main() {
 
   Cohere co; // enviroment variable: CO_API_KEY
 
-  Json chat = co.Chat->chat(
+  Json chat = co.Chat->request(
     "hello world!", 
     "command"
   );
